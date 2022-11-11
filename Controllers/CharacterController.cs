@@ -13,7 +13,8 @@ namespace dotnet_rpg.Controllers
 
     public class CharacterController : ControllerBase
     {
-        private static List<Character> characters = new List<Character>(){
+        private static List<Character> characters = new List<Character>()
+        {
             new Character(),
             new Character { Id =1, 
                             Name = "Sam" 
@@ -32,6 +33,15 @@ namespace dotnet_rpg.Controllers
         public ActionResult<Character> GetSingle(int id)
         {
             return Ok(characters.FirstOrDefault(c => c.Id == id));      //returns the first value with the Id == id
+        }
+
+
+        [HttpPost]
+        public ActionResult<List<Character>> AddCharacter(Character newCharacter)
+        {
+            characters.Add(newCharacter);
+            return Ok(characters);
+
         }
     }
 }
