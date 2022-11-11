@@ -13,12 +13,25 @@ namespace dotnet_rpg.Controllers
 
     public class CharacterController : ControllerBase
     {
-        private static Character knight = new Character();
+        private static List<Character> characters = new List<Character>(){
+            new Character(),
+            new Character { Id =1, 
+                            Name = "Sam" 
+                            }
+        };
 
-        [HttpGet]                                       //allows swagger to identify the below text as a GetHTTPRequest
-        public ActionResult<Character> Get()
+        //[HttpGet]                                       //allows swagger to identify the below text as a GetHTTPRequest
+        [HttpGet("GetAll")]                               //swagger requires a name for buttons when theyre are more than one
+                                                        // you can combine the Route and HTTPGet
+        public ActionResult<List<Character>> Get()
         {
-            return Ok(knight);
+            return Ok(characters);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Character> GetSingle(int id)
+        {
+            return Ok(characters.FirstOrDefault(c => c.Id == id));      //returns the first value with the Id == id
         }
     }
 }
