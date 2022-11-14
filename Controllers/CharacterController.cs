@@ -30,6 +30,16 @@ namespace dotnet_rpg.Controllers
             return Ok(await _characterService.GetAllCharacters());
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Delete(int id)
+        {
+            var response = await _characterService.DeleteCharacter(id);                        //changes the status code to 404 if the data is not found.. previously it gave a 200 error
+            if(response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id)
         {
@@ -42,6 +52,18 @@ namespace dotnet_rpg.Controllers
         {
             
             return Ok(await _characterService.AddCharacter(newCharacter));
+
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updateCharacter)
+        {
+            var response = await _characterService.UpdateCharacter(updateCharacter);                        //changes the status code to 404 if the data is not found.. previously it gave a 200 error
+            if(response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
 
         }
     }
