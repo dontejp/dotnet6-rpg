@@ -24,23 +24,23 @@ namespace dotnet_rpg.Controllers
         //[HttpGet]                                       //allows swagger to identify the below text as a GetHTTPRequest
         [HttpGet("GetAll")]                               //swagger requires a name for buttons when theyre are more than one
                                                         // you can combine the Route and HTTPGet
-        public ActionResult<List<Character>> Get()
+        public async Task<ActionResult<ServiceResponse<List<Character>>>> Get()
         {
-            return Ok(_characterService.GetAllCharacters());
+            return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Character> GetSingle(int id)
+        public async Task<ActionResult<ServiceResponse<Character>>> GetSingle(int id)
         {
-            return Ok(_characterService.GetCharacterById(id));      //returns the first value with the Id == id
+            return Ok(await _characterService.GetCharacterById(id));      //returns the first value with the Id == id
         }
 
 
         [HttpPost]
-        public ActionResult<List<Character>> AddCharacter(Character newCharacter)
+        public async Task<ActionResult<ServiceResponse<List<Character>>>> AddCharacter(Character newCharacter)
         {
             
-            return Ok(_characterService.AddCharacter(newCharacter));
+            return Ok(await _characterService.AddCharacter(newCharacter));
 
         }
     }
