@@ -78,6 +78,7 @@ namespace dotnet_rpg.Services.CharacterService
             Character character = characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
 
             //_mapper.Map(updatedCharacter, character);                   this maps the updated character andsaves it into the character variable
+            //the above code worked but _mapper.Map<Character>(updatedCharacter); didnt ... maybe save this in a variable then set it equal to character?
 
             character.Name = updatedCharacter.Name;
             character.HitPoints = updatedCharacter.HitPoints;
