@@ -14,5 +14,7 @@ namespace dotnet_rpg.Data
         }
 
         public DbSet<Character> Characters { get; set; }                            //allows us to query and save the data ... name of the attrib. is the name of the table
+
+        public DbSet<User> Users {get; set;}
     }
 }
