@@ -12,6 +12,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 );
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);                          //allows us to use automapper after downloading the Nuget "dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection"
