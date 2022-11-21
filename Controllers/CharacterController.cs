@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using dotnet_rpg.Dtos.Character;
 using dotnet_rpg.Services.CharacterService;
@@ -29,7 +30,9 @@ namespace dotnet_rpg.Controllers
                                                         // you can combine the Route and HTTPGet
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
         {
+            
             return Ok(await _characterService.GetAllCharacters());
+            
         }
 
         [HttpDelete("{id}")]
