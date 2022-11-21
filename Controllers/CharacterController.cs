@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnet_rpg.Dtos.Character;
 using dotnet_rpg.Services.CharacterService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace dotnet_rpg.Controllers
 {
-    
+    [Authorize]
     [ApiController]                                     //enables api attributes like routing
     [Route("api/[controller]")]                         //how were able to find a specific controller
 
