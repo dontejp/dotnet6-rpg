@@ -24,6 +24,7 @@ namespace dotnet_rpg.Controllers
         }
 
         //[HttpGet]                                       //allows swagger to identify the below text as a GetHTTPRequest
+        //[AllowAnonymous]                                  //allows an unauthorized user to access controller
         [HttpGet("GetAll")]                               //swagger requires a name for buttons when theyre are more than one
                                                         // you can combine the Route and HTTPGet
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
