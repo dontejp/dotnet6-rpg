@@ -28,7 +28,7 @@ namespace dotnet_rpg.Services.CharacterService
             .FindFirstValue(ClaimTypes.NameIdentifier));
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
-            var serviceResposne = new ServiceResponse<List<GetCharacterDto>>();
+            var response = new ServiceResponse<List<GetCharacterDto>>();
             
             Character character = _mapper.Map<Character>(newCharacter);                             //Since the input type was changed to AddCharacterDTO from Character... we now need to map the newCharacter to Character since they have different params
             character.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
@@ -36,11 +36,11 @@ namespace dotnet_rpg.Services.CharacterService
             //character.Id = characters.Max(c => c.Id) +1;                                            // returns the max characterID then adds 1
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
-            serviceResposne.Data = await _context.Characters
+            response.Data = await _context.Characters
             .Where(c => c.User.Id == GetUserId())
             .Select(c => _mapper.Map<GetCharacterDto>(c))
             .ToListAsync();    //this is being done because the we still need to map the character into a GetCharDTO before we put it into the serviceResponse
-            return serviceResposne;
+            return response;
         }
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
@@ -51,7 +51,7 @@ namespace dotnet_rpg.Services.CharacterService
             try
             {                                                                                        
                 Character character = await _context.Characters
-                .FirstOrDefaultAsync(c => c.Id == id && c.User.Id == GetUserId());                   //firstordefault returns null , first just returns an exception if not found
+                    .FirstOrDefaultAsync(c => c.Id == id && c.User.Id == GetUserId());                   //firstordefault returns null , first just returns an exception if not found
                 if (character != null)
                 {
                     _context.Characters.Remove(character);
@@ -87,43 +87,51 @@ namespace dotnet_rpg.Services.CharacterService
 
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
-            var serviceResponse = new ServiceResponse<GetCharacterDto>();
+            var response = new ServiceResponse<GetCharacterDto>();
             var dbCharacter  = await _context.Characters
                 .FirstOrDefaultAsync(c => c.Id == id && c.User.Id == GetUserId());
-            serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);                     //this is being mapped... <class its being mapped to>(what is being mapped);
+            response.Data = _mapper.Map<GetCharacterDto>(dbCharacter);                     //this is being mapped... <class its being mapped to>(what is being mapped);
 
-            return serviceResponse;
+            return response;
         }
 
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
         {
-            var serviceResponse = new ServiceResponse<GetCharacterDto>();         
+            var response = new ServiceResponse<GetCharacterDto>();         
             
 
             try{                                                                                        //exception 
             var character = await _context.Characters
-            .FirstOrDefaultAsync(c => c.Id == updatedCharacter.Id);
+                .Include(c=>c.User)                                                                     //It wasnt necessary this time; however, to access related object you might need to "include" them
+                .FirstOrDefaultAsync(c => c.Id == updatedCharacter.Id);
 
             //_mapper.Map(updatedCharacter, character);                   this maps the updated character andsaves it into the character variable
             //the above code worked but _mapper.Map<Character>(updatedCharacter); didnt ... maybe save this in a variable then set it equal to character?
+            if(character.User.Id == GetUserId())
+            {
+                character.Name = updatedCharacter.Name;
+                character.HitPoints = updatedCharacter.HitPoints;
+                character.Strength = updatedCharacter.Strength;
+                character.Defense = updatedCharacter.Defense;
+                character.Intelligence = updatedCharacter.Intelligence;
+                character.Class = updatedCharacter.Class;
 
-            character.Name = updatedCharacter.Name;
-            character.HitPoints = updatedCharacter.HitPoints;
-            character.Strength = updatedCharacter.Strength;
-            character.Defense = updatedCharacter.Defense;
-            character.Intelligence = updatedCharacter.Intelligence;
-            character.Class = updatedCharacter.Class;
+                await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
-
-            serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
+                response.Data = _mapper.Map<GetCharacterDto>(character);
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "Character not found";
+            }
             }catch (Exception ex)                                                           
             {
-                serviceResponse.Success = false;
-                serviceResponse.Message = ex.Message;
+                response.Success = false;
+                response.Message = ex.Message;
             }
 
-            return serviceResponse;
+            return response;
         }
     }
 }
