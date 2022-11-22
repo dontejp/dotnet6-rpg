@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using dotnet_rpg.Dtos.Character;
+using dotnet_rpg.Dtos.Weapon;
 
 //The purpose of this class is to help AutoMapper Map the profiles to each other
 
@@ -16,6 +17,7 @@ namespace dotnet_rpg
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
             CreateMap<UpdateCharacterDto, Character>();
+            CreateMap<Weapon, GetWeaponDto>();
         }
     }
 }
