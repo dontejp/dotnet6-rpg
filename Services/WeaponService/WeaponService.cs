@@ -31,6 +31,8 @@ namespace dotnet_rpg.Services.WeaponService
                 Character character = await _context.Characters
                     .FirstOrDefaultAsync(c => c.Id == newWeapon.CharacterId &&
                     c.User.Id == int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)));
+
+                
                 if(character == null)
                 {
                     response.Success= false;

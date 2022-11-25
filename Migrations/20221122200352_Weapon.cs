@@ -10,8 +10,10 @@ namespace dotnetrpg.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
+
             migrationBuilder.CreateTable(
-                name: "Weapon",
+                name: "Weapons",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -22,9 +24,9 @@ namespace dotnetrpg.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Weapon", x => x.Id);
+                    table.PrimaryKey("PK_Weapons", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Weapon_Characters_CharacterId",
+                        name: "FK_Weapons_Characters_CharacterId",
                         column: x => x.CharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
@@ -32,8 +34,8 @@ namespace dotnetrpg.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Weapon_CharacterId",
-                table: "Weapon",
+                name: "IX_Weapons_CharacterId",
+                table: "Weapons",
                 column: "CharacterId",
                 unique: true);
         }
@@ -42,7 +44,7 @@ namespace dotnetrpg.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Weapon");
+                name: "Weapons");
         }
     }
 }
